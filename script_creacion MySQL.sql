@@ -1,0 +1,189 @@
+-- Crear la base de datos (si no existe)
+CREATE DATABASE IF NOT EXISTS BD_tienda_ropa;
+USE BD_tienda_ropa;
+
+-- ============================
+-- ELIMINAR TABLAS SI EXISTEN
+-- ============================
+DROP TABLE IF EXISTS COMPRA_PRODUCTO;
+DROP TABLE IF EXISTS PROVEE_PRODUCTO;
+DROP TABLE IF EXISTS DETALLE_VENTA;
+DROP TABLE IF EXISTS ADMINISTRADOR;
+DROP TABLE IF EXISTS VENDEDOR;
+DROP TABLE IF EXISTS PRODUCTO;
+DROP TABLE IF EXISTS PROVEEDOR;
+DROP TABLE IF EXISTS EMPLEADO;
+DROP TABLE IF EXISTS CLIENTE;
+
+-- ============================
+-- CREACIÓN DE TABLAS
+-- ============================
+
+CREATE TABLE CLIENTE (
+    ci INT PRIMARY KEY,
+    nombre VARCHAR(20),
+    apellido VARCHAR(20),
+    correo VARCHAR(50),
+    nit INT
+);
+
+CREATE TABLE EMPLEADO (
+    idEmpleado INT PRIMARY KEY,
+    ci INT,
+    rol_empleado VARCHAR(20),
+    nombreE VARCHAR(20),
+    apellidoE VARCHAR(20),
+    nroContacto INT
+);
+
+CREATE TABLE ADMINISTRADOR (
+    idEmpleado INT PRIMARY KEY,
+    userAdmi VARCHAR(20),
+    passwordAdmi CHAR(18),
+    CONSTRAINT fk_admin_emp FOREIGN KEY (idEmpleado) REFERENCES EMPLEADO(idEmpleado)
+);
+
+CREATE TABLE VENDEDOR (
+    idEmpleado INT PRIMARY KEY,
+    userV VARCHAR(20),
+    passwordV VARCHAR(20),
+    CONSTRAINT fk_vendedor_emp FOREIGN KEY (idEmpleado) REFERENCES EMPLEADO(idEmpleado)
+);
+
+CREATE TABLE PRODUCTO (
+    idProducto INT PRIMARY KEY,
+    nombre_producto VARCHAR(20),
+    precio_unitario INT,
+    marca VARCHAR(20),
+    tipo VARCHAR(20),
+    color VARCHAR(20),
+    talla VARCHAR(20),
+    modelo VARCHAR(20),
+    stock INT
+);
+
+CREATE TABLE PROVEEDOR (
+    idProveedor INT PRIMARY KEY,
+    nombreProv VARCHAR(20),
+    tipo VARCHAR(20),
+    nroContacto INT,
+    ubicacion VARCHAR(50)
+);
+
+CREATE TABLE DETALLE_VENTA (
+    idDetalle_venta INT PRIMARY KEY,
+    metodo_pago VARCHAR(20),
+    fecha_venta DATETIME,
+    hora_venta DATETIME,
+    nroVenta INT,
+    ci INT,
+    idEmpleado INT,
+    CONSTRAINT fk_dv_cliente FOREIGN KEY (ci) REFERENCES CLIENTE(ci),
+    CONSTRAINT fk_dv_empleado FOREIGN KEY (idEmpleado) REFERENCES EMPLEADO(idEmpleado)
+);
+
+CREATE TABLE COMPRA_PRODUCTO (
+    idProducto INT,
+    idDetalle_venta INT,
+    cantidad INT,
+    PRIMARY KEY (idProducto, idDetalle_venta),
+    CONSTRAINT fk_cp_producto FOREIGN KEY (idProducto) REFERENCES PRODUCTO(idProducto),
+    CONSTRAINT fk_cp_dv FOREIGN KEY (idDetalle_venta) REFERENCES DETALLE_VENTA(idDetalle_venta)
+);
+
+CREATE TABLE PROVEE_PRODUCTO (
+    idProveedor INT,
+    idProducto INT,
+    cantidad INT,
+    fecha_compra DATE,
+    precio_total INT,
+    PRIMARY KEY (idProveedor, idProducto),
+    CONSTRAINT fk_pp_prov FOREIGN KEY (idProveedor) REFERENCES PROVEEDOR(idProveedor),
+    CONSTRAINT fk_pp_prod FOREIGN KEY (idProducto) REFERENCES PRODUCTO(idProducto)
+);
+
+-- ============================
+-- INSERCIÓN DE DATOS
+-- ============================
+
+-- CLIENTE
+INSERT INTO CLIENTE VALUES (13922297, 'Juan', 'Perez', 'juanp@mail.com', 2374426);
+INSERT INTO CLIENTE VALUES (29882971, 'Maria', 'Lopez', 'mlopez@mail.com', NULL);
+INSERT INTO CLIENTE VALUES (33829813, 'Luis', 'Martinez', 'lmart@mail.com', 234567);
+INSERT INTO CLIENTE VALUES (51112724, 'Ana', 'Gomez', 'ana@mail.com', NULL);
+INSERT INTO CLIENTE VALUES (91832411, 'Carlos', 'Ramos', 'carlosr@mail.com', NULL);
+INSERT INTO CLIENTE VALUES (44221313, 'Lucia', 'Fernandez', 'luciaf@mail.com', NULL);
+INSERT INTO CLIENTE VALUES (13823813, 'Pedro', 'Suarez', 'pedros@mail.com', NULL);
+
+-- EMPLEADO
+INSERT INTO EMPLEADO VALUES (700, 9001, 'Administrador', 'Oscar', 'Mendoza', 62371665);
+INSERT INTO EMPLEADO VALUES (702, 9002, 'Vendedor', 'Valeria', 'Quispe', 6798745);
+INSERT INTO EMPLEADO VALUES (703, 9003, 'Vendedor', 'Marco', 'Torrez', 76432131);
+INSERT INTO EMPLEADO VALUES (704, 9004, 'Soporte', 'Sandra', 'Chavez', 77562314);
+
+-- ADMINISTRADOR
+INSERT INTO ADMINISTRADOR VALUES (700, 'adminOscar', 'admin123456789');
+
+-- VENDEDOR
+INSERT INTO VENDEDOR VALUES (702, 'valeriaQ', 'ven123');
+INSERT INTO VENDEDOR VALUES (703, 'marcoT', 'ven456');
+
+-- PRODUCTO
+INSERT INTO PRODUCTO VALUES (101, 'Camisa', 140, 'Levis', 'Hombre', 'Azul', 'M', 'Simple', 50);
+INSERT INTO PRODUCTO VALUES (102, 'Pantalon', 220, 'Wrangler', 'Hombre', 'Negro', 'L', 'Simple', 30);
+INSERT INTO PRODUCTO VALUES (103, 'Falda', 110, 'Zara', 'Mujer', 'Rojo', 'S', 'Clasico', 20);
+INSERT INTO PRODUCTO VALUES (104, 'Vestido', 350, 'H&M', 'Mujer', 'Verde', 'M', 'Moderno', 10);
+INSERT INTO PRODUCTO VALUES (105, 'Chaqueta', 450, 'Nike', 'Unisex', 'Negro', 'L', 'Clasico', 15);
+INSERT INTO PRODUCTO VALUES (106, 'Camiseta', 90, 'Adidas', 'Unisex', 'Blanco', 'M', 'Simple', 40);
+INSERT INTO PRODUCTO VALUES (107, 'Short', 90, 'Puma', 'Hombre', 'Gris', 'L', 'Simple', 25);
+INSERT INTO PRODUCTO VALUES (108, 'Blusa', 120, 'Guess', 'Mujer', 'Rosa', 'S', 'Moderno', 18);
+INSERT INTO PRODUCTO VALUES (109, 'Jeans', 250, 'Levis', 'Unisex', 'Azul', 'L', 'Simple', 22);
+INSERT INTO PRODUCTO VALUES (110, 'Abrigo', 320, 'Tommy', 'Hombre', 'Beige', 'M', 'Simple', 12);
+INSERT INTO PRODUCTO VALUES (111, 'Gorro', 90, 'Reebok', 'Unisex', 'Negro', 'Único', 'Simple', 35);
+INSERT INTO PRODUCTO VALUES (112, 'Bufanda', 50, 'Uniqlo', 'Unisex', 'Gris', 'Único', 'Clasico', 27);
+
+-- DETALLE_VENTA
+INSERT INTO DETALLE_VENTA VALUES
+(500, 'Tarjeta', '2025-07-01 09:15:00', '2025-07-01 09:15:00', 1, 13922297, 702),
+(507, 'Efectivo', '2025-07-03 11:45:00', '2025-07-03 11:45:00', 2, 29882971, 703),
+(517, 'Tarjeta', '2025-07-05 14:30:00', '2025-07-05 14:30:00', 3, 33829813, 702),
+(556, 'Efectivo', '2025-07-07 16:20:00', '2025-07-07 16:20:00', 4, 51112724, 702),
+(521, 'Tarjeta', '2025-07-10 10:05:00', '2025-07-10 10:05:00', 5, 91832411, 703),
+(527, 'Efectivo', '2025-07-13 12:40:00', '2025-07-13 12:40:00', 6, 44221313, 703),
+(531, 'Tarjeta', '2025-07-16 15:55:00', '2025-07-16 15:55:00', 7, 13823813, 702),
+(551, 'Efectivo', '2025-07-19 18:10:00', '2025-07-19 18:10:00', 8, 33829813, 703),
+(563, 'Efectivo', '2025-07-19 19:10:00', '2025-07-19 19:10:00', 9, 29882971, 703);
+
+-- COMPRA_PRODUCTO
+INSERT INTO COMPRA_PRODUCTO VALUES (101, 500, 1);
+INSERT INTO COMPRA_PRODUCTO VALUES (105, 507, 1);
+INSERT INTO COMPRA_PRODUCTO VALUES (103, 517, 2);
+INSERT INTO COMPRA_PRODUCTO VALUES (104, 556, 1);
+INSERT INTO COMPRA_PRODUCTO VALUES (105, 521, 1);
+INSERT INTO COMPRA_PRODUCTO VALUES (106, 527, 2);
+INSERT INTO COMPRA_PRODUCTO VALUES (107, 531, 3);
+INSERT INTO COMPRA_PRODUCTO VALUES (102, 500, 2);
+INSERT INTO COMPRA_PRODUCTO VALUES (108, 517, 1);
+INSERT INTO COMPRA_PRODUCTO VALUES (112, 551, 3);
+
+-- PROVEEDOR
+INSERT INTO PROVEEDOR VALUES (71, 'Textiles S.A', 'Empresa', 7654321, 'Av.Pando-Centro');
+INSERT INTO PROVEEDOR VALUES (72, 'RopaImport', 'Industria', 7896541, 'Calle 2-Ceja');
+INSERT INTO PROVEEDOR VALUES (73, 'ModaExpress', 'Independiente', 7418529, 'Av.Julio-Obrajes');
+
+-- PROVEE_PRODUCTO
+INSERT INTO PROVEE_PRODUCTO VALUES (71, 101, 24, '2025-01-05', 1200);
+INSERT INTO PROVEE_PRODUCTO VALUES (71, 102, 12, '2025-01-05', 1500);
+INSERT INTO PROVEE_PRODUCTO VALUES (71, 103, 30, '2025-01-05', 9000);
+INSERT INTO PROVEE_PRODUCTO VALUES (72, 104, 50, '2025-01-07', 5000);
+INSERT INTO PROVEE_PRODUCTO VALUES (72, 105, 30, '2025-01-07', 9000);
+INSERT INTO PROVEE_PRODUCTO VALUES (72, 106, 70, '2025-02-07', 5600);
+INSERT INTO PROVEE_PRODUCTO VALUES (73, 107, 50, '2025-02-07', 4500);
+INSERT INTO PROVEE_PRODUCTO VALUES (73, 108, 30, '2025-02-07', 3300);
+INSERT INTO PROVEE_PRODUCTO VALUES (73, 109, 40, '2025-07-01', 8400);
+INSERT INTO PROVEE_PRODUCTO VALUES (71, 110, 35, '2025-07-01', 4250);
+INSERT INTO PROVEE_PRODUCTO VALUES (71, 111, 40, '2025-07-01', 2400);
+INSERT INTO PROVEE_PRODUCTO VALUES (72, 112, 35, '2025-07-05', 2450);
+INSERT INTO PROVEE_PRODUCTO VALUES (72, 101, 30, '2025-07-05', 3600);
+INSERT INTO PROVEE_PRODUCTO VALUES (73, 102, 20, '2025-07-05', 4000);
+INSERT INTO PROVEE_PRODUCTO VALUES (73, 103, 10, '2025-07-05', 1500);
