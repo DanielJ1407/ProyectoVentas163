@@ -22,8 +22,8 @@ Route::get('/admin/Productos/create', [App\Http\Controllers\ProductoController::
 Route::get('/admin/clientes', [App\Http\Controllers\ClienteController::class, 'index']) -> name('clientes.index');
 Route::get('/admin/clientes/create', [App\Http\Controllers\ClienteController::class, 'create'])->name('clientes.create');
 
-Route::get('/admin/ventas', [App\Http\Controllers\ClienteController::class, 'index']) -> name('ventas.index');
-Route::get('/admin/ventas/create', [App\Http\Controllers\ClienteController::class, 'create'])->name('ventas.create');
+Route::get('/admin/ventas', [App\Http\Controllers\DetalleVentaController::class, 'index']) -> name('ventas.index');
+Route::get('/admin/ventas/create', [App\Http\Controllers\DetalleVentaController::class, 'create'])->name('ventas.create');
 
 Route::get('/admin/vendedores', [App\Http\Controllers\ClienteController::class, 'index']) -> name('vendedores.index');
 Route::get('/admin/vendedores/create', [App\Http\Controllers\ClienteController::class, 'create'])->name('vendedores.create');

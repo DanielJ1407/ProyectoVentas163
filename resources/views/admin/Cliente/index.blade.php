@@ -25,7 +25,38 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body" style="display: block;">
-                
+                <table border = "1" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>CI</th>
+                            <th>Nombre</th>
+                            <th>Apellido</th>
+                            <th>correo</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($clientes as $cliente)
+                        <tr>
+                            <td>{{ $cliente-> ci }}</td>
+                            <td>{{ $cliente-> nombre }}</td>
+                            <td>{{ $cliente-> apellido }}</td>
+                            <td>{{ $cliente-> correo }}</td>
+                            <td>
+                                <a href="{{ url('/admin/clientes/'.$cliente->id.'/edit') }}" class="btn btn-success">Editar</a>
+
+                                <form action="{{ url('/admin/clientes/'.$cliente->id) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                                </form>
+
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+
+                </table>
 
               </div>
               <!-- /.card-body -->

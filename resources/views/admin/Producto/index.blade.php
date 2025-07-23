@@ -25,7 +25,36 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body" style="display: block;">
-                
+                <table border = "1" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Precio</th>
+                            <th>Marca</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($productos as $producto)
+                            <tr>
+                                <td>{{ $producto-> idProducto}}</td>
+                                <td>{{ $producto-> nombre_producto }}</td>
+                                <td>{{ $producto-> precio_unitario }}</td>
+                                <td>{{ $producto->marca }}</td>
+                                <td>
+                                    <a href="{{ url('/admin/productos/'.$producto->id.'/edit') }}" class="btn btn-warning">Editar</a>
+                                    <form action="{{ url('/admin/productos/'.$producto->id) }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+
+                </table>
 
               </div>
               <!-- /.card-body -->
