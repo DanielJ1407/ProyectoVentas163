@@ -19,7 +19,8 @@ class ProductoController extends Controller
     }
 
     public function store(Request $request)
-    {
+    {   
+        // return response()->json($request->all());
         $data = $request->validate([
             'idProducto'      => 'required|integer|unique:PRODUCTO,idProducto',
             'nombre_producto' => 'required|string|max:20',
@@ -33,7 +34,9 @@ class ProductoController extends Controller
         ]);
 
         Producto::create($data);
-        return redirect()->route('productos.index');
+        return redirect()->route('productos.index')
+        ->with('mensaje', 'Producto creado exitosamente')
+        ->with('icono', 'success');
     }
 
     public function show(Producto $producto)

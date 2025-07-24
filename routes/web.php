@@ -15,9 +15,11 @@ Route::get('/admin', [App\Http\Controllers\adminController::class, 'index'])->na
 
 Route::get('/admin/categorias', [App\Http\Controllers\CategoriaController::class, 'index']) -> name('categorias.index');
 Route::get('/admin/categorias/create', [App\Http\Controllers\CategoriaController::class, 'create'])->name('categorias.create');
+Route::post('/admin/categorias/create', [App\Http\Controllers\CategoriaController::class, 'create'])->name('categorias.create');
 
 Route::get('/admin/Productos', [App\Http\Controllers\ProductoController::class, 'index']) -> name('productos.index');
 Route::get('/admin/Productos/create', [App\Http\Controllers\ProductoController::class, 'create'])->name('productos.create');
+Route::post('/admin/Productos/create', [App\Http\Controllers\ProductoController::class, 'store'])->name('productos.create');
 
 Route::get('/admin/clientes', [App\Http\Controllers\ClienteController::class, 'index']) -> name('clientes.index');
 Route::get('/admin/clientes/create', [App\Http\Controllers\ClienteController::class, 'create'])->name('clientes.create');

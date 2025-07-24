@@ -3,6 +3,11 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
+    <style>
+        [class*=sidebar-dark-] {
+            background-color: #26375eff;
+        }
+    </style>
     <h1>Dashboard</h1>
 @stop
 
