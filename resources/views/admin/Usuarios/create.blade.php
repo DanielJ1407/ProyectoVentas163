@@ -126,7 +126,7 @@
                                         <div class="input-group-icon">
                                             <i class="bi bi-lock"></i>
                                             <input type="password" class="form-control" id="passwordAdmi" name="passwordAdmi" 
-                                                placeholder="Contraseña" value="{{ old('passwordAdmi') }}">
+                                                placeholder="Contraseña (Mínimo 8 caracteres)" value="{{ old('passwordAdmi') }}">
                                         </div>
                                         <!-- boton para visualizar contraseña -->
                                         <button type="button" class="btn btn-secondary mt-2" onclick="togglePasswordVisibility()">

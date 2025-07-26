@@ -116,11 +116,11 @@ return [
         'enabled' => true,
         'mode' => 'fullscreen',
         'img' => [
-            'path' => 'vendor/adminlte/dist/img/logoModernStyle.png',
+            'path' => 'vendor/adminlte/dist/img/logo.jpg',
             'alt' => 'AdminLTE Preloader Image',
             'effect' => 'animation__shake',
-            'width' => 60,
-            'height' => 60,
+            'width' => 100,
+            'height' => 100,
         ],
     ],
 
@@ -260,7 +260,7 @@ return [
     */
 
     'use_route_url' => false,
-    'dashboard_url' => 'home',
+    'dashboard_url' => '',
     'logout_url' => 'logout',
     'login_url' => 'login',
     'register_url' => 'register',
@@ -332,16 +332,16 @@ return [
         //     'label_color' => 'success',
         // ],
         ['header' => 'MENU'],
+                [
+            'text' => 'Productos',
+            'url' => 'admin/Productos',
+            'icon' => 'fa-solid fa-clipboard',
+            // 'classes' => 'bg-blue text-white',
+        ],
         [
             'text' => 'Provedores',
             'url' => 'admin/proveedores',
             'icon' => 'fas fa-fw fa-list',
-            // 'classes' => 'bg-blue text-white',
-        ],
-        [
-            'text' => 'Productos',
-            'url' => 'admin/Productos',
-            'icon' => 'fa-solid fa-clipboard',
             // 'classes' => 'bg-blue text-white',
         ],
         [

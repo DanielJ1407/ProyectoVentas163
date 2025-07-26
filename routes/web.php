@@ -2,16 +2,16 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+Route::get('/', [App\Http\Controllers\ProductoController::class, 'index']) -> name('productos.index')->middleware('auth');
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 // ->middleware('auth')
 
-Route::get('/admin', [App\Http\Controllers\adminController::class, 'index'])->name('admin.index');
+Route::get('/admin', [App\Http\Controllers\adminController::class, 'index'])->name('admin.index')->middleware('auth');
 
 Route::get('/admin/categorias', [App\Http\Controllers\CategoriaController::class, 'index']) -> name('categorias.index');
 Route::get('/admin/categorias/create', [App\Http\Controllers\CategoriaController::class, 'create'])->name('categorias.create');

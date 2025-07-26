@@ -14,20 +14,22 @@ class EmpleadoController extends Controller
 
     public function create()
     {
+
         return view('admin.Empleado.create');
     }
 
     public function store(Request $request)
     {
+        // return response()->json($request);
         $data = $request->validate([
-            'idEmpleado'   => 'required|integer|unique:EMPLEADO,idEmpleado',
-            'ci'           => 'required|integer|unique:EMPLEADO,ci',
+            // 'idEmpleado'   => 'required|integer|unique:EMPLEADO,idEmpleado',
+            'ci'           => 'required|integer',
             'rol_empleado' => 'required|string|max:20',
             'nombreE'      => 'required|string|max:20',
             'apellidoE'    => 'required|string|max:20',
             'nroContacto'  => 'required|integer',
         ]);
-
+        // return response()->json($data);
         Empleado::create($data);
         return redirect()->route('empleados.index')
         ->with('mensaje', 'Empleado creado exitosamente')

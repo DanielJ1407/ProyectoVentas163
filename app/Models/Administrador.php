@@ -21,5 +21,9 @@ class Administrador extends Model
     {
         return $this->belongsTo(Empleado::class, 'idEmpleado', 'idEmpleado');
     }
+//     public function user()
+// {
+//     return $this->hasOne(User::class, 'name', 'userAdmi');
+// }
 }
 

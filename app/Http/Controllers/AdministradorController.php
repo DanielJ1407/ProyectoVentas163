@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Administrador;
 use App\Models\Empleado;
+use App\Models\User;
 use Illuminate\Http\Request;
+// use Illuminate\Support\Facades\DB;
 
 class AdministradorController extends Controller
 {
@@ -12,7 +14,7 @@ class AdministradorController extends Controller
     {   
         // obtener al administrador y sus datos como empleado
         $admins = Administrador::with('empleado')->get();
-        // return response()->json($admins);
+        // return response()->json($users);
         return view('admin.usuarios.index', compact('admins'));
     }
 
@@ -20,16 +22,18 @@ class AdministradorController extends Controller
     {   
         $admins = Administrador::all();
         $empleados = Empleado::all();
-        return view('admin.usuarios.create', compact('admins', 'empleados'));
+        $users = User::all();
+        return view('admin.usuarios.create', compact('admins', 'empleados', 'users'));
     }
 // {
-//   "_token": "S3rhfx2Eask4wrCRqMMlb00CnoYJXFhW9BpsR2IA",
+//   "_token": "iBa59gGL9ToW24gNWQ9WS8utlBODYvXvmKompjIX",
+//   "idEmpleado": "123",
 //   "ci": "123",
-//   "nombre": "123",
-//   "apellido": "12",
+//   "nombreE": "123",
+//   "apellidoE": "123",
 //   "nroContacto": "123",
 //   "userAdmi": "123",
-//   "passwordAdmi": "12543"
+//   "passwordAdmi": "12345"
 // }
     public function store(Request $request)
     {
@@ -37,11 +41,12 @@ class AdministradorController extends Controller
         $data = $request->validate([
             'idEmpleado'   => 'required|integer|unique:empleado,idEmpleado',
             'userAdmi'     => 'required|string|max:50',
-            'passwordAdmi' => 'required|string|max:100',
+            'passwordAdmi' => 'required|string|min:8|max:250',
             'ci'           => 'required|integer',
             'nombreE'     => 'required|string|max:20',
             'apellidoE'   => 'required|string|max:20',
             'nroContacto' => 'required|integer',
+            // 'email'        => 'required|string|max:20',
         ]);
         // return response()->json($data);
         $empleado = Empleado::create([
@@ -50,11 +55,16 @@ class AdministradorController extends Controller
             'nombreE'     => $data['nombreE'],
             'apellidoE'   => $data['apellidoE'],
             'nroContacto' => $data['nroContacto'],
-            'rol_empleado'          => 'Administrador',
+            'rol_empleado' => 'Administrador',
         ]);
         $empleado->administrador()->create([
             'userAdmi'     => $data['userAdmi'],
             'passwordAdmi' => $data['passwordAdmi'],
+        ]);
+        User::create([
+            'name'     => $data['userAdmi'],      // puedes usar su nombre real si prefieres
+            'email'    => $data['userAdmi'],
+            'password' => $data['passwordAdmi'],  // el cast 'hashed' en el modelo hará bcrypt automáticamente
         ]);
         return redirect()->route('usuarios.index')
         ->with('mensaje', 'Administrador creado exitosamente')
@@ -91,16 +101,17 @@ class AdministradorController extends Controller
         $data = $request->validate([
             'idEmpleado'   => 'required|integer|exists:empleado,idEmpleado',
             'userAdmi'     => 'required|string|max:50',
-            'passwordAdmi' => 'required|string|max:100',
+            'passwordAdmi' => 'required|string|min:8|max:250',
             'ci'           => 'required|integer',
             'nombreE'     => 'required|string|max:20',
             'apellidoE'   => 'required|string|max:20',
             'nroContacto' => 'required|integer',
+            // 'email'        => 'required|string|max:20',
         ]);
         // return response()->json($data);
 
         // actulizar empleado
-        $empleado = Empleado::findOrFail($administrador->idEmpleado);
+        $empleado = Empleado::findOrFail($idEmpleado);
         $empleado->update([
             'idEmpleado'  => $data['idEmpleado'],
             'ci'           => $data['ci'],
@@ -110,19 +121,35 @@ class AdministradorController extends Controller
             'rol_empleado'          => 'Administrador',
         ]);
         // actualizar administrador
+        $administrador = Administrador::where('idEmpleado', $idEmpleado)->firstOrFail();
+        $user = User::where('name', $administrador->userAdmi)->firstOrFail();
+
         $administrador->update([
             'userAdmi'     => $data['userAdmi'],
             'passwordAdmi' => $data['passwordAdmi'],
         ]);
-        return response()->json($data);
+        $user->update([
+            'name'     => $data['userAdmi'],      // puedes usar su nombre real si prefieres
+            'email'    => $data['userAdmi'],
+            'password' => $data['passwordAdmi'],  // el cast 'hashed' in the model hará bcrypt automáticamente
+        ]);
+
         return redirect()->route('usuarios.index')
         ->with('mensaje', 'Administrador actualizado exitosamente')
         ->with('icono', 'success');
     }
 
-    public function destroy(Administrador $administrador)
+    public function destroy($idEmpleado)
     {
-        $administrador->delete();
-        return redirect()->route('usuarios.index');
+        $empleado = Empleado::findOrFail($idEmpleado);
+        $user = User::where('name', $empleado->administrador->userAdmi)->firstOrFail();
+        $user->delete();
+        // $administrador = Administrador::where('idEmpleado', $idEmpleado)->firstOrFail();
+        $empleado->administrador()->delete();
+        $empleado->delete();
+        // $administrador->delete();
+        return redirect()->route('usuarios.index')
+        ->with('mensaje', 'Usuario eliminado exitosamente')
+        ->with('icono', 'success');
     }
 }

@@ -39,7 +39,6 @@
                     <tbody>
                             @foreach($admins as $admin)
                                 <tr>
-                                    <!-- Obtener los datos del administrador con sus datos de empleado -->
                                     <td>{{ $admin->userAdmi }}</td>
                                     <td>{{ $admin->empleado->ci }}</td>
                                     <td>{{ $admin->empleado->nombreE }}</td>
@@ -64,7 +63,7 @@
                                                 function preguntar{{$admin->idEmpleado}}(event) {
                                                     event.preventDefault();
                                                     Swal.fire({
-                                                        title: "¿Eliminar cliente?",
+                                                        title: "¿Eliminar usuario?",
                                                         text: "Esta acción no se puede deshacer",
                                                         icon: "warning",
                                                         showCancelButton: true,
