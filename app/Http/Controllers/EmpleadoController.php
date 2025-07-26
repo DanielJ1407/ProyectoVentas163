@@ -1,7 +1,7 @@
 <?php
-
 namespace App\Http\Controllers;
 
+use App\Models\Empleado;
 use Illuminate\Http\Request;
 
 class EmpleadoController extends Controller
@@ -9,17 +9,18 @@ class EmpleadoController extends Controller
     public function index()
     {
         $empleados = Empleado::all();
-        return view('empleados.index', compact('empleados'));
+        return view('admin.Empleado.index', compact('empleados'));
     }
 
     public function create()
     {
-        return view('empleados.create');
+        return view('admin.Empleado.create');
     }
 
     public function store(Request $request)
     {
         $data = $request->validate([
+            'idEmpleado'   => 'required|integer|unique:EMPLEADO,idEmpleado',
             'ci'           => 'required|integer|unique:EMPLEADO,ci',
             'rol_empleado' => 'required|string|max:20',
             'nombreE'      => 'required|string|max:20',
@@ -28,20 +29,24 @@ class EmpleadoController extends Controller
         ]);
 
         Empleado::create($data);
-        return redirect()->route('empleados.index');
+        return redirect()->route('empleados.index')
+        ->with('mensaje', 'Empleado creado exitosamente')
+        ->with('icono', 'success');
     }
 
-    public function show(Empleado $empleado)
+    public function show($idEmpleado)
     {
-        return view('empleados.show', compact('empleado'));
+        $empleado = Empleado::findOrFail($idEmpleado);
+        return view('admin.Empleado.show', compact('empleado'));
     }
 
-    public function edit(Empleado $empleado)
+    public function edit($idEmpleado)
     {
-        return view('empleados.edit', compact('empleado'));
+        $empleado = Empleado::findOrFail($idEmpleado);
+        return view('admin.Empleado.edit', compact('empleado'));
     }
 
-    public function update(Request $request, Empleado $empleado)
+    public function update(Request $request, $idEmpleado)
     {
         $data = $request->validate([
             'rol_empleado' => 'required|string|max:20',
@@ -50,13 +55,19 @@ class EmpleadoController extends Controller
             'nroContacto'  => 'required|integer',
         ]);
 
+        $empleado = Empleado::findOrFail($idEmpleado);
         $empleado->update($data);
-        return redirect()->route('empleados.index');
+        return redirect()->route('empleados.index')
+        ->with('mensaje', 'Empleado actualizado exitosamente')
+        ->with('icono', 'success');
     }
 
-    public function destroy(Empleado $empleado)
+    public function destroy($idEmpleado)
     {
+        $empleado = Empleado::findOrFail($idEmpleado);
         $empleado->delete();
-        return redirect()->route('empleados.index');
+        return redirect()->route('empleados.index')
+        ->with('mensaje', 'Empleado eliminado exitosamente')
+        ->with('icono', 'success');
     }
 }

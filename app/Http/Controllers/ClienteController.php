@@ -16,7 +16,7 @@ class ClienteController extends Controller
         return view('admin.cliente.index', compact('clientes'));
     }
 
-        public function create()
+    public function create()
     {
         return view('admin.cliente.create');
     }
@@ -27,40 +27,50 @@ class ClienteController extends Controller
             'ci'       => 'required|integer|unique:CLIENTE,ci',
             'nombre'   => 'required|string|max:20',
             'apellido' => 'required|string|max:20',
-            'correo'   => 'required|email|max:50',
+            'correo'   => 'required|max:50',
             'nit'      => 'required|integer',
         ]);
 
         Cliente::create($data);
-        return redirect()->route('clientes.index');
+        return redirect()->route('clientes.index')
+        ->with('mensaje', 'Cliente creado exitosamente')
+        ->with('icono', 'success');
     }
 
-    public function show(Cliente $cliente)
-    {
-        return view('clientes.show', compact('cliente'));
+    public function show($ci)
+    {          
+        $cliente = Cliente::findOrFail($ci);
+        return view('admin.cliente.show', compact('cliente'));
     }
 
-    public function edit(Cliente $cliente)
-    {
-        return view('clientes.edit', compact('cliente'));
+    public function edit($ci)
+    {          
+        $cliente = Cliente::findOrFail($ci);
+        return view('admin.cliente.edit', compact('cliente'));
     }
 
-    public function update(Request $request, Cliente $cliente)
+    public function update(Request $request, $ci)
     {
         $data = $request->validate([
             'nombre'   => 'required|string|max:20',
             'apellido' => 'required|string|max:20',
-            'correo'   => 'required|email|max:50',
+            'correo'   => 'required|max:50',
             'nit'      => 'required|integer',
         ]);
 
+        $cliente = Cliente::findOrFail($ci);
         $cliente->update($data);
-        return redirect()->route('clientes.index');
+        return redirect()->route('clientes.index')
+        ->with('mensaje', 'Cliente actualizado exitosamente')
+        ->with('icono', 'success');
     }
 
-    public function destroy(Cliente $cliente)
+    public function destroy($ci)
     {
+        $cliente = Cliente::findOrFail($ci);
         $cliente->delete();
-        return redirect()->route('clientes.index');
+        return redirect()->route('clientes.index')
+        ->with('mensaje', 'Cliente eliminado exitosamente')
+        ->with('icono', 'success');
     }
 }

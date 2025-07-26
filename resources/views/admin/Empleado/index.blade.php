@@ -4,7 +4,7 @@
     <nav aria-label="breadcrumb" style = "font-size: 18pt">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{url('/admin')}}">INICIO</a></li>
-        <!-- <li class="breadcrumb-item"><a href="{{url('/admin/productos')}}">Productos</a></li>
+        <!-- <li class="breadcrumb-item"><a href="{{url('/admin/empleados')}}">Productos</a></li>
         <li class="breadcrumb-item active" aria-current="page">Listado</li> -->
     </ol>
     </nav>
@@ -16,10 +16,10 @@
     <div class="col-md-12">
             <div class="card card-outline card-primary">
               <div class="card-header">
-                <h3 class="card-title"> Productos Registrados </h3>
+                <h3 class="card-title"> Empleados Registrados </h3>
 
                 <div class="card-tools">
-                  <a class="btn btn-primary" href="{{url('/admin/Productos/create')}}"> Crear Nuevo </a>
+                  <a class="btn btn-primary" href="{{url('/admin/empleados/create')}}"> Crear Nuevo </a>
                 </div>
                 <!-- /.card-tools -->
               </div>
@@ -29,36 +29,36 @@
                     <thead>
                         <tr>
                             <th>ID</th>
+                            <th>CI</th>
                             <th>Nombre</th>
-                            <th>Precio</th>
-                            <th>Marca</th>
-                            <th>Tipo</th>
-                            <th>Color</th>
+                            <th>Apellido</th>
+                            <th>Rol</th>
+                            <th>Número de Contacto</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($productos as $producto)
+                        @foreach($empleados as $empleado)
                             <tr>
-                                <td>{{ $producto-> idProducto}}</td>
-                                <td>{{ $producto-> nombre_producto }}</td>
-                                <td>{{ $producto-> precio_unitario }}</td>
-                                <td>{{ $producto->marca }}</td>
-                                <td>{{ $producto->tipo }}</td>
-                                <td>{{ $producto->color }}</td>
+                                <td>{{ $empleado-> idEmpleado}}</td>
+                                <td>{{ $empleado-> ci}}</td>
+                                <td>{{ $empleado-> nombreE}}</td>
+                                <td>{{ $empleado-> apellidoE}}</td>
+                                <td>{{ $empleado-> rol_empleado}}</td>
+                                <td>{{ $empleado-> nroContacto}}</td>
                                 <td style="text-align: center">
                                     <div class="btn-group" role="group" aria-label="Basic example">
-                                        <a href="{{ url('/admin/Productos/'.$producto->idProducto) }}" class="btn btn-info"><i class="fas fa-eye"></i> Ver </a>
-                                        <a href="{{ url('/admin/Productos/'.$producto->idProducto.'/edit') }}" class="btn btn-warning"><i class="fas fa-eye"></i> Editar </a>
+                                        <a href="{{ url('/admin/empleados/'.$empleado->idEmpleado) }}" class="btn btn-info"><i class="fas fa-eye"></i> Ver </a>
+                                        <a href="{{ url('/admin/empleados/'.$empleado->idEmpleado.'/edit') }}" class="btn btn-warning"><i class="fas fa-eye"></i> Editar </a>
                                         
-                                        <form action="{{ url('/admin/Productos/'.$producto->idProducto) }}" id="form-eliminar-{{$producto->idProducto}}" method="POST" class="d-inline">
+                                        <form action="{{ url('/admin/empleados/'.$empleado->idEmpleado) }}" id="form-eliminar-{{$empleado->idEmpleado}}" method="POST" class="d-inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger" onclick="preguntar{{$producto->idProducto}}(event)">
+                                            <button type="submit" class="btn btn-danger" onclick="preguntar{{$empleado->idEmpleado}}(event)">
                                                 <i class="fas fa-trash-alt"></i> Eliminar</button>
                                         </form>
                                         <script>
-                                            function preguntar{{$producto->idProducto}}(event) {
+                                            function preguntar{{$empleado->idEmpleado}}(event) {
                                                 event.preventDefault();  // envita el envio del formulario
                                                 Swal.fire({
                                                 title: "¿Desea eliminar el producto?",
@@ -71,14 +71,14 @@
                                                 denyButtonText: "Cancelar"
                                                 }).then((result) => {
                                                     if (result.isConfirmed) {
-                                                        document.getElementById("form-eliminar-{{$producto->idProducto}}").submit();
+                                                        document.getElementById("form-eliminar-{{$empleado->idEmpleado}}").submit();
                                                     }
                                                 });
                                             }
                                         </script>
                                     </div>
-                                    <!-- <a href="{{ url('/admin/productos/'.$producto->id.'/edit') }}" class="btn btn-warning">Editar</a>
-                                    <form action="{{ url('/admin/productos/'.$producto->id) }}" method="POST" style="display:inline;">
+                                    <!-- <a href="{{ url('/admin/empleados/'.$empleado->id.'/edit') }}" class="btn btn-warning">Editar</a>
+                                    <form action="{{ url('/admin/empleados/'.$empleado->id) }}" method="POST" style="display:inline;">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger">Eliminar</button>

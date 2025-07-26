@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Proveedor;
+use App\Models\Producto;
+use App\Models\ProveeProducto;
 use Illuminate\Http\Request;
 
 class ProveedorController extends Controller
@@ -10,12 +12,12 @@ class ProveedorController extends Controller
     public function index()
     {
         $proveedores = Proveedor::all();
-        return view('proveedores.index', compact('proveedores'));
+        return view('admin.Proveedor.index', compact('proveedores'));
     }
 
     public function create()
     {
-        return view('proveedores.create');
+        return view('admin.Proveedor.create');
     }
 
     public function store(Request $request)
@@ -29,20 +31,24 @@ class ProveedorController extends Controller
         ]);
 
         Proveedor::create($data);
-        return redirect()->route('proveedores.index');
+        return redirect()->route('proveedores.index')
+        ->with('mensaje', 'Proveedor creado exitosamente')
+        ->with('icono', 'success');
     }
 
-    public function show(Proveedor $proveedor)
+    public function show($idProveedor)
     {
-        return view('proveedores.show', compact('proveedor'));
+        $proveedor = Proveedor::with('productos')->findOrFail($idProveedor);
+        return view('admin.Proveedor.show', compact('proveedor'));
     }
 
-    public function edit(Proveedor $proveedor)
+    public function edit($idProveedor)
     {
-        return view('proveedores.edit', compact('proveedor'));
+        $proveedor = Proveedor::findOrFail($idProveedor);
+        return view('admin.Proveedor.edit', compact('proveedor'));
     }
 
-    public function update(Request $request, Proveedor $proveedor)
+    public function update(Request $request, $idProveedor)
     {
         $data = $request->validate([
             'nombreProv'  => 'required|string|max:20',
@@ -51,13 +57,19 @@ class ProveedorController extends Controller
             'ubicacion'   => 'required|string|max:50',
         ]);
 
+        $proveedor = Proveedor::findOrFail($idProveedor);
         $proveedor->update($data);
-        return redirect()->route('proveedores.index');
+        return redirect()->route('proveedores.index')
+        ->with('mensaje', 'Proveedor actualizado exitosamente')
+        ->with('icono', 'success');
     }
 
-    public function destroy(Proveedor $proveedor)
+    public function destroy($idProveedor)
     {
+        $proveedor = Proveedor::findOrFail($idProveedor);
         $proveedor->delete();
-        return redirect()->route('proveedores.index');
+        return redirect()->route('proveedores.index')
+        ->with('mensaje', 'Proveedor eliminado exitosamente')
+        ->with('icono', 'success');
     }
 }

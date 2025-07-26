@@ -39,17 +39,19 @@ class ProductoController extends Controller
         ->with('icono', 'success');
     }
 
-    public function show(Producto $producto)
+    public function show($idProducto)
     {
-        return view('productos.show', compact('producto'));
+        $producto = Producto::findOrFail($idProducto);
+        return view('admin.producto.show', compact('producto'));
     }
 
-    public function edit(Producto $producto)
-    {
-        return view('productos.edit', compact('producto'));
+    public function edit($idProducto)
+    {          
+        $producto = Producto::findOrFail($idProducto);
+        return view('admin.producto.edit', compact('producto'));
     }
 
-    public function update(Request $request, Producto $producto)
+    public function update(Request $request, $idProducto)
     {
         $data = $request->validate([
             'nombre_producto' => 'required|string|max:20',
@@ -62,13 +64,19 @@ class ProductoController extends Controller
             'stock'           => 'required|integer',
         ]);
 
+        $producto = Producto::findOrFail($idProducto);
         $producto->update($data);
-        return redirect()->route('productos.index');
+        return redirect()->route('productos.index')
+        ->with('mensaje', 'Producto actualizado exitosamente')
+        ->with('icono', 'success');
     }
 
-    public function destroy(Producto $producto)
+    public function destroy($idProducto)
     {
+        $producto = Producto::findOrFail($idProducto);
         $producto->delete();
-        return redirect()->route('productos.index');
+        return redirect()->route('productos.index')
+        ->with('mensaje', 'Producto eliminado exitosamente')
+        ->with('icono', 'success');
     }
 }
