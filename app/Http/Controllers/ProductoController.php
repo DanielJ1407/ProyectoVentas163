@@ -22,7 +22,7 @@ class ProductoController extends Controller
     {   
         // return response()->json($request->all());
         $data = $request->validate([
-            'idProducto'      => 'required|integer|unique:PRODUCTO,idProducto',
+            // 'idProducto'      => 'required|integer|unique:PRODUCTO,idProducto',
             'nombre_producto' => 'required|string|max:20',
             'precio_unitario' => 'required|integer',
             'marca'           => 'required|string|max:20',

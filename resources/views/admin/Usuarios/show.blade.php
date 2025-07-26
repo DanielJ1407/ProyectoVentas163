@@ -6,7 +6,7 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{url('/admin')}}">INICIO</a></li>
-                <li class="breadcrumb-item"><a href="{{url('/admin/clientes')}}">Clientes</a></li>
+                <li class="breadcrumb-item"><a href="{{url('/admin/usuarios')}}">Usuarios</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Detalle</li>
             </ol>
         </nav>
@@ -18,49 +18,58 @@
             <div class="col-lg-8">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title"><i class="bi bi-person-badge"></i> Detalles del Cliente</h3>
+                        <h3 class="card-title"><i class="bi bi-person-badge"></i> Detalles del Usuario</h3>
                     </div>
                     
                     <div class="card-body">
                         <div class="info-grid">
                             <div class="info-card">
+                                <div class="info-label"><i class="bi bi-credit-card"></i> ID de usuario </div>
+                                <div class="info-value">{{ $empleado->idEmpleado }}</div>
+                            </div>
+                            <div class="info-card">
                                 <div class="info-label"><i class="bi bi-credit-card"></i> Cédula de Identidad</div>
-                                <div class="info-value">{{ $cliente->ci }}</div>
+                                <div class="info-value">{{ $empleado->ci }}</div>
                             </div>
                             
                             <div class="info-card">
                                 <div class="info-label"><i class="bi bi-person"></i> Nombre</div>
-                                <div class="info-value">{{ $cliente->nombre }}</div>
+                                <div class="info-value">{{ $empleado->nombreE }}</div>
                             </div>
                             
                             <div class="info-card">
                                 <div class="info-label"><i class="bi bi-person"></i> Apellido</div>
-                                <div class="info-value">{{ $cliente->apellido }}</div>
+                                <div class="info-value">{{ $empleado->apellidoE }}</div>
+                            </div>
+                            <!-- nroContacto -->
+                             <div class="info-card">
+                                <div class="info-label"><i class="bi bi-credit-card"></i> Número de Contacto</div>
+                                <div class="info-value">{{ $empleado->nroContacto }}</div>
                             </div>
                             
                             <div class="info-card">
                                 <div class="info-label"><i class="bi bi-envelope"></i> Correo Electrónico</div>
                                 <div class="info-value">
-                                    <a href="mailto:{{ $cliente->correo }}" class="text-decoration-none">
-                                        {{ $cliente->correo }}
+                                    <a href="mailto:{{ $administrador->userAdmi }}" class="text-decoration-none">
+                                        {{ $administrador->userAdmi }}
                                     </a>
                                 </div>
                             </div>
-                            
+                            <!-- contraseña -->
                             <div class="info-card">
-                                <div class="info-label"><i class="bi bi-file-earmark-text"></i> NIT</div>
-                                <div class="info-value">{{ $cliente->nit }}</div>
+                                <div class="info-label"><i class="bi bi-file-earmark-text"></i> Contraseña</div>
+                                <div class="info-value">{{ $administrador->passwordAdmi }}</div>
                             </div>
                         </div>
                         
                         <div class="action-buttons">
-                            <a href="{{url('/admin/clientes')}}" class="btn-back">
-                                <i class="bi bi-arrow-left"></i> Volver a Clientes
+                            <a href="{{url('/admin/usuarios')}}" class="btn-back">
+                                <i class="bi bi-arrow-left"></i> Volver a Usuarios
                             </a>
                             
                             <div>
-                                <a href="{{ url('/admin/clientes/'.$cliente->ci.'/edit') }}" class="btn-back">
-                                    <i class="bi bi-pencil"></i> Editar Cliente
+                                <a href="{{ url('/admin/usuarios/'.$administrador->ci.'/edit') }}" class="btn-back">
+                                    <i class="bi bi-pencil"></i> Editar Usuario
                                 </a>
                             </div>
                         </div>

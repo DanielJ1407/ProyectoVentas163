@@ -1,0 +1,82 @@
+TABLE CLIENTE {
+    ci INT PRIMARY KEY,
+    nombre VARCHAR(20),
+    apellido VARCHAR(20),
+    correo VARCHAR(50),
+    nit INT
+}
+
+TABLE EMPLEADO {
+    idEmpleado INT PRIMARY KEY,
+    ci INT,
+    rol_empleado VARCHAR(20),
+    nombreE VARCHAR(20),
+    apellidoE VARCHAR(20),
+    nroContacto INT
+}
+
+TABLE ADMINISTRADOR {
+    idEmpleado INT PRIMARY KEY,
+    userAdmi VARCHAR(20),
+    passwordAdmi CHAR(18),
+    CONSTRAINT fk_admin_emp FOREIGN KEY (idEmpleado) REFERENCES EMPLEADO(idEmpleado)
+}
+
+TABLE VENDEDOR {
+    idEmpleado INT PRIMARY KEY,
+    userV VARCHAR(20),
+    passwordV VARCHAR(20),
+    CONSTRAINT fk_vendedor_emp FOREIGN KEY (idEmpleado) REFERENCES EMPLEADO(idEmpleado)
+}
+
+TABLE PRODUCTO {
+    idProducto INT PRIMARY KEY,
+    nombre_producto VARCHAR(20),
+    precio_unitario INT,
+    marca VARCHAR(20),
+    tipo VARCHAR(20),
+    color VARCHAR(20),
+    talla VARCHAR(20),
+    modelo VARCHAR(20),
+    stock INT
+}
+
+TABLE PROVEEDOR {
+    idProveedor INT PRIMARY KEY,
+    nombreProv VARCHAR(20),
+    tipo VARCHAR(20),
+    nroContacto INT,
+    ubicacion VARCHAR(50)
+}
+
+TABLE DETALLE_VENTA {
+    idDetalle_venta INT PRIMARY KEY,
+    metodo_pago VARCHAR(20),
+    fecha_venta DATETIME,
+    hora_venta DATETIME,
+    nroVenta INT,
+    ci INT,
+    idEmpleado INT,
+    CONSTRAINT fk_dv_cliente FOREIGN KEY (ci) REFERENCES CLIENTE(ci),
+    CONSTRAINT fk_dv_empleado FOREIGN KEY (idEmpleado) REFERENCES EMPLEADO(idEmpleado)
+}
+
+TABLE COMPRA_PRODUCTO {
+    idProducto INT,
+    idDetalle_venta INT,
+    cantidad INT,
+    PRIMARY KEY (idProducto, idDetalle_venta),
+    CONSTRAINT fk_cp_producto FOREIGN KEY (idProducto) REFERENCES PRODUCTO(idProducto),
+    CONSTRAINT fk_cp_dv FOREIGN KEY (idDetalle_venta) REFERENCES DETALLE_VENTA(idDetalle_venta)
+}
+
+TABLE PROVEE_PRODUCTO {
+    idProveedor INT,
+    idProducto INT,
+    cantidad INT,
+    fecha_compra DATE,
+    precio_total INT,
+    PRIMARY KEY (idProveedor, idProducto),
+    CONSTRAINT fk_pp_prov FOREIGN KEY (idProveedor) REFERENCES PROVEEDOR(idProveedor),
+    CONSTRAINT fk_pp_prod FOREIGN KEY (idProducto) REFERENCES PRODUCTO(idProducto)
+}

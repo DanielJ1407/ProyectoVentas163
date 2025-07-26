@@ -34,10 +34,12 @@ class DetalleVenta extends Model
     public function productos()
     {
         return $this->belongsToMany(
-            Producto::class,
-            'COMPRA_PRODUCTO',
-            'idDetalle_venta',
-            'idProducto'
-        )->withPivot('cantidad');
+            Producto::class,          // Modelo relacionado
+            'COMPRA_PRODUCTO',         // Nombre de la tabla pivot
+            'idDetalle_venta',         // FK de este modelo en la pivot
+            'idProducto'               // FK del modelo Producto en la pivot
+        )
+        ->withPivot('cantidad')       // Campos extra en la pivot
+        ->using(\App\Models\CompraProducto::class); // (opcional) modelo Pivot
     }
 }

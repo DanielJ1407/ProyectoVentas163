@@ -5,8 +5,8 @@
         <!-- Breadcrumb -->
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{url('/admin')}}">INICIO</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Productos</li>
+                <li class="breadcrumb-item"><a href="{{ url('/admin') }}">INICIO</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Detalle Ventas</li>
             </ol>
         </nav>
         <div class="hr"></div>
@@ -15,149 +15,100 @@
 
 @section('content')
 <div class="row mb-4">
-            <div class="col-md-3">
-                <div class="stats-card">
-                    <i class="bi bi-box-seam"></i>
-                    <h3>{{ count($productos) }}</h3>
-                    <p>Productos Registrados</p>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="stats-card">
-                    <i class="bi bi-tags"></i>
-                    <h3>{{ $productos->unique('marca')->count() }}</h3>
-                    <p>Marcas Diferentes</p>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="stats-card">
-                    <i class="bi bi-grid"></i>
-                    <h3>{{ $productos->unique('tipo')->count() }}</h3>
-                    <p>Categorías</p>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="stats-card">
-                    <i class="bi bi-palette"></i>
-                    <h3>{{ $productos->unique('color')->count() }}</h3>
-                    <p>Colores Disponibles</p>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Tarjeta Principal -->
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title"><i class="bi bi-box-seam me-2"></i> Productos Registrados</h3>
-                <a class="btn btn-primary" href="{{url('/admin/Productos/create')}}">
-                    <i class="bi bi-plus-lg"></i> Crear Nuevo Producto
-                </a>
-            </div>
-            
-            <div class="table-container">
-                <!-- Buscador y Filtros -->
-                <div class="search-container">
-                    <div class="search-box">
-                        <i class="bi bi-search"></i>
-                        <input type="text" placeholder="Buscar productos...">
-                    </div>
-                    <button class="filter-btn">
-                        <i class="bi bi-funnel"></i> Filtros
-                    </button>
-                </div>
-                
-                <!-- Tabla de Productos -->
-                <div class="table-responsive">
-                    <table class="table" id="example1" >
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Nombre</th>
-                                <th>Precio</th>
-                                <th>Marca</th>
-                                <th>Tipo</th>
-                                <th>Color</th>
-                                <th style="text-align: center">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if(count($productos) > 0)
-                                @foreach($productos as $producto)
-                                    <tr>
-                                        <td>{{ $producto->idProducto }}</td>
-                                        <td>
-                                            <div>{{ $producto->nombre_producto }}</div>
-                                            <div class="badge-tag">
-                                                {{ $producto->modelo }}
-                                            </div>
-                                        </td>
-                                        <td>Bs{{ number_format($producto->precio_unitario, 2) }}</td>
-                                        <td>{{ $producto->marca }}</td>
-                                        <td>{{ $producto->tipo }}</td>
-                                        <td>
-                                            <div style="display: flex; align-items: center; gap: 8px">
-                                                <div style="width: 16px; height: 16px; border-radius: 50%; background-color: {{ strtolower($producto->color) }}"></div>
-                                                {{ $producto->color }}
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="action-buttons">
-                                                <a href="{{ url('/admin/Productos/'.$producto->idProducto) }}" class="btn btn-info">
-                                                    <i class="bi bi-eye"></i> Ver
-                                                </a>
-                                                <a href="{{ url('/admin/Productos/'.$producto->idProducto.'/edit') }}" class="btn btn-warning">
-                                                    <i class="bi bi-pencil"></i> Editar
-                                                </a>
-                                                <form action="{{ url('/admin/Productos/'.$producto->idProducto) }}" id="form-eliminar-{{$producto->idProducto}}" method="POST" class="d-inline">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger" onclick="preguntar{{$producto->idProducto}}(event)">
-                                                        <i class="bi bi-trash"></i> Eliminar
-                                                    </button>
-                                                </form>
-                                                <script>
-                                                    function preguntar{{$producto->idProducto}}(event) {
-                                                        event.preventDefault();
-                                                        Swal.fire({
-                                                            title: "¿Eliminar producto?",
-                                                            text: "Esta acción no se puede deshacer",
-                                                            icon: "warning",
-                                                            showCancelButton: true,
-                                                            confirmButtonColor: "#4361ee",
-                                                            cancelButtonColor: "#d33",
-                                                            confirmButtonText: "Sí, eliminar",
-                                                            cancelButtonText: "Cancelar"
-                                                        }).then((result) => {
-                                                            if (result.isConfirmed) {
-                                                                document.getElementById("form-eliminar-{{$producto->idProducto}}").submit();
-                                                            }
-                                                        });
-                                                    }
-                                                </script>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            @else
-                                <tr>
-                                    <td colspan="7">
-                                        <div class="empty-state">
-                                            <i class="bi bi-inbox"></i>
-                                            <h4>No se encontraron productos</h4>
-                                            <p>Comienza agregando nuevos productos a tu catálogo</p>
-                                            <a class="btn btn-primary mt-3" href="{{url('/admin/Productos/create')}}">
-                                                <i class="bi bi-plus-lg"></i> Crear Primer Producto
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endif
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+    <div class="col-md-3">
+        <div class="stats-card">
+            <i class="bi bi-receipt"></i>
+            <h3>{{ count($ventas) }}</h3>
+            <p>Ventas Registradas</p>
         </div>
     </div>
+    <div class="col-md-3">
+        <div class="stats-card">
+            <i class="bi bi-credit-card"></i>
+            <h3>{{ $ventas->unique('metodo_pago')->count() }}</h3>
+            <p>Métodos de Pago</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stats-card">
+            <i class="bi bi-person"></i>
+            <h3>{{ $ventas->unique('ci')->count() }}</h3>
+            <p>Clientes Diferentes</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stats-card">
+            <i class="bi bi-people"></i>
+            <h3>{{ $ventas->unique('idEmpleado')->count() }}</h3>
+            <p>Empleados Participantes</p>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title"><i class="bi bi-receipt me-2"></i> Detalle de Ventas</h3>
+        <a class="btn btn-primary" href="{{ url('/admin/ventas/create') }}">
+            <i class="bi bi-plus-lg"></i> Nueva Venta
+        </a>
+    </div>
+    <div class="table-container">
+        <div class="search-container">
+            <div class="search-box">
+                <i class="bi bi-search"></i>
+                <input type="text" placeholder="Buscar ventas...">
+            </div>
+            <button class="filter-btn">
+                <i class="bi bi-funnel"></i> Filtros
+            </button>
+        </div>
+        <div class="table-responsive">
+            <table class="table" id="example1">
+                <thead>
+                    <tr>
+                        <th>No Venta</th>
+                        <th>Cliente</th>
+                        <th>Empleado</th>
+                        <th>Producto</th>
+                        <th>Método Pago</th>
+                        <th>Fecha Venta</th>
+                        <th>Cantidad</th>
+                        <th style="text-align: center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($ventas as $venta)
+                        <tr>
+                            <td>{{ $venta->detalleVenta->nroVenta }}</td>
+                            <td>{{ $venta->detalleVenta->cliente->nombre}}</td>
+                            <td>{{ $venta->detalleVenta->empleado->nombreE}}</td>
+                            <td>{{ $venta->productos->nombre_producto }}</td>
+                            <td>{{ $venta->detalleVenta->metodo_pago }}</td>
+                            <td>{{ $venta->detalleVenta->fecha_venta }}</td>
+                            <td>{{ $venta->cantidad}}</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <a href="{{ url('/admin/ventas/'.$venta->idProducto.'/'.$venta->idDetalle_venta) }}" class="btn btn-info btn-action">
+                                        <i class="bi bi-eye"></i> Ver
+                                    </a>
+                                    <a href="{{ url('/admin/ventas/'.$venta->idProducto.'/'.$venta->idDetalle_venta.'/edit') }}" class="btn btn-warning btn-action">
+                                        <i class="bi bi-pencil"></i> Editar
+                                    </a>
+                                    <!-- <form action="{{ url('/admin/ventas/'.$venta->idProducto.'/'.$venta->idDetalle_venta) }}" method="POST" class="d-inline" id="form-delete-{{ $venta->idDetalle_venta }}">
+                                        @csrf @method('DELETE')
+                                        <button type="button" class="btn btn-danger btn-action" onclick="confirmDelete({{ $venta->idDetalle_venta }})">
+                                            <i class="bi bi-trash"></i> Eliminar
+                                        </button>
+                                    </form> -->
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 @stop
 
 @section('css')
@@ -499,21 +450,29 @@
 @stop
 
 @section('js')
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Función de búsqueda
+        function confirmDelete(id) {
+            Swal.fire({
+                title: '¿Eliminar venta?',
+                text: 'Esta acción no se puede deshacer',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('form-delete-' + id).submit();
+                }
+            });
+        }
         document.querySelector('.search-box input').addEventListener('keyup', function() {
-            const searchTerm = this.value.toLowerCase();
-            const rows = document.querySelectorAll('tbody tr');
-            
-            rows.forEach(row => {
-                const text = row.textContent.toLowerCase();
-                row.style.display = text.includes(searchTerm) ? '' : 'none';
+            const term = this.value.toLowerCase();
+            document.querySelectorAll('#example1 tbody tr').forEach(row => {
+                row.style.display = row.textContent.toLowerCase().includes(term) ? '' : 'none';
             });
         });
     </script>
-    <script>
+        <script>
         $(function () {
             $("#example1").DataTable({
                 "pageLength": 20,

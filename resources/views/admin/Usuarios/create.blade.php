@@ -6,12 +6,11 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{url('/admin')}}">INICIO</a></li>
-                <li class="breadcrumb-item"><a href="{{url('/admin/proveedores')}}">Proveedores</a></li>
+                <li class="breadcrumb-item"><a href="{{url('/admin/usuarios')}}">Usuarios</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Nuevo</li>
             </ol>
         </nav>
         <div class="hr"></div>
-        
 @stop
 
 @section('content')
@@ -19,27 +18,41 @@
             <div class="col-lg-10">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title"><i class="bi bi-truck"></i> Registrar Nuevo Proveedor</h3>
+                        <h3 class="card-title"><i class="bi bi-person-plus"></i> Registrar Nuevo Usuario</h3>
                     </div>
                     
                     <div class="card-body">
-                        <form action="{{url('/admin/proveedores/create')}}" method="POST">
+                        <form action="{{url('/admin/usuarios/create')}}" method="POST">
                             @csrf
                             
                             <div class="section-title">
-                                <i class="bi bi-info-circle"></i> Información del Proveedor
+                                <i class="bi bi-person-badge"></i> Información Personal
                             </div>
-                            
+
                             <div class="row">
+                                 <!-- ID de usuario  -->
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="idProveedor" class="form-label">ID Proveedor</label>
+                                        <label for="idEmpleado" class="form-label">ID de Usuario</label>
                                         <div class="input-group-icon">
-                                            <i class="bi bi-upc"></i>
-                                            <input type="text" class="form-control" id="idProveedor" name="idProveedor" 
-                                                placeholder="ID único" value="{{ old('idProveedor') }}">
+                                            <i class="bi bi-person"></i>
+                                            <input type="text" class="form-control" id="idEmpleado" name="idEmpleado" 
+                                                placeholder="ID de Usuario" value="{{ old('idEmpleado') }}">
                                         </div>
-                                        @error('idProveedor')
+                                        @error('idEmpleado')
+                                            <div class="error-message">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="ci" class="form-label">Cédula de Identidad</label>
+                                        <div class="input-group-icon">
+                                            <i class="bi bi-credit-card"></i>
+                                            <input type="text" class="form-control" id="ci" name="ci" 
+                                                placeholder="Ej: 12345678" value="{{ old('ci') }}">
+                                        </div>
+                                        @error('ci')
                                             <div class="error-message">{{ $message }}</div>
                                         @enderror
                                     </div>
@@ -47,89 +60,106 @@
                                 
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="nombreProv" class="form-label">Nombre del Proveedor</label>
+                                        <label for="nombreE" class="form-label">Nombre de Usuario</label>
                                         <div class="input-group-icon">
-                                            <i class="bi bi-building"></i>
-                                            <input type="text" class="form-control" id="nombreProv" name="nombreProv" 
-                                                placeholder="Nombre completo" value="{{ old('nombreProv') }}">
+                                            <i class="bi bi-person"></i>
+                                            <input type="text" class="form-control" id="nombreE" name="nombreE" 
+                                                placeholder="Nombre(s) del Usuario" value="{{ old('nombre') }}">
                                         </div>
-                                        @error('nombreProv')
+                                        @error('nombre')
                                             <div class="error-message">{{ $message }}</div>
                                         @enderror
                                     </div>
                                 </div>
                                 
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="apellidoE" class="form-label">Apellido de usuario</label>
+                                        <div class="input-group-icon">
+                                            <i class="bi bi-person"></i>
+                                            <input type="text" class="form-control" id="apellidoE" name="apellidoE" 
+                                                placeholder="Apellido(s) del Usuario" value="{{ old('apellido') }}">
+                                        </div>
+                                        @error('apellido')
+                                            <div class="error-message">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <!-- nroContacto -->
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="nroContacto" class="form-label">Número de Contacto</label>
                                         <div class="input-group-icon">
                                             <i class="bi bi-telephone"></i>
-                                            <input type="text" class="form-control" id="nroContacto" name="nroContacto" 
-                                                placeholder="Número de teléfono" value="{{ old('nroContacto') }}">
+                                            <input type="number" class="form-control" id="nroContacto" name="nroContacto" 
+                                                placeholder="Número de contacto" value="{{ old('nroContacto') }}">
                                         </div>
                                         @error('nroContacto')
                                             <div class="error-message">{{ $message }}</div>
                                         @enderror
                                     </div>
                                 </div>
-                                
+                            </div>
+                            
+                            <div class="section-title">
+                                <i class="bi bi-envelope"></i> Información de Contacto
+                            </div>
+                            
+                            <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="ubicacion" class="form-label">Ubicación</label>
+                                        <label for="ci" class="form-label">Correo de Usuario</label>
                                         <div class="input-group-icon">
-                                            <i class="bi bi-geo-alt"></i>
-                                            <input type="text" class="form-control" id="ubicacion" name="ubicacion" 
-                                                placeholder="Dirección o ciudad" value="{{ old('ubicacion') }}">
+                                            <i class="bi bi-envelope"></i>
+                                            <input type="text" class="form-control" id="userAdmi" name="userAdmi" 
+                                                placeholder="Ej: usuario@ejemplo.com" value="{{ old('userAdmi') }}">
                                         </div>
-                                        @error('ubicacion')
+                                        @error('userAdmi')
+                                            <div class="error-message">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <!-- Ingreso y validacion de contraseña -->
+                                 <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="passwordAdmi" class="form-label">Contraseña de Usuario</label>
+                                        <div class="input-group-icon">
+                                            <i class="bi bi-lock"></i>
+                                            <input type="password" class="form-control" id="passwordAdmi" name="passwordAdmi" 
+                                                placeholder="Contraseña" value="{{ old('passwordAdmi') }}">
+                                        </div>
+                                        <!-- boton para visualizar contraseña -->
+                                        <button type="button" class="btn btn-secondary mt-2" onclick="togglePasswordVisibility()">
+                                            <i class="bi bi-eye-slash"></i> Ver Contraseña
+                                        </button>
+                                        <script>
+                                            function togglePasswordVisibility() {
+                                                const passwordField = document.getElementById('passwordAdmi');
+                                                const icon = document.querySelector('.btn i');
+                                                if (passwordField.type === 'password') {
+                                                    passwordField.type = 'text';
+                                                    icon.classList.remove('bi-eye-slash');
+                                                    icon.classList.add('bi-eye');
+                                                } else {
+                                                    passwordField.type = 'password';
+                                                    icon.classList.remove('bi-eye');
+                                                    icon.classList.add('bi-eye-slash');
+                                                }
+                                            }
+                                        </script>
+                                        @error('passwordAdmi')
                                             <div class="error-message">{{ $message }}</div>
                                         @enderror
                                     </div>
                                 </div>
                             </div>
                             
-                            <div class="section-title">
-                                <i class="bi bi-tags"></i> Tipo de Proveedor
-                            </div>
-                            <div>
-                                <input type="text" class="form-control" id="tipo" name="tipo" placeholder="Tipo de proveedor" value="{{ old('tipo') }}">
-                            </div>
-                            
-                            <!-- <div class="form-group">
-                                <div class="provider-type-selector">
-                                    <div class="type-option" data-type="equipamiento" onclick="selectType(this, 'equipamiento')">
-                                        <i class="bi bi-tools"></i>
-                                        <span>Equipamiento</span>
-                                    </div>
-                                    <div class="type-option" data-type="ropa" onclick="selectType(this, 'ropa')">
-                                        <i class="bi bi-person-standing-dress"></i>
-                                        <span>Ropa</span>
-                                    </div>
-                                    <div class="type-option" data-type="electronica" onclick="selectType(this, 'electronica')">
-                                        <i class="bi bi-cpu"></i>
-                                        <span>Electrónica</span>
-                                    </div>
-                                    <div class="type-option" data-type="alimentos" onclick="selectType(this, 'alimentos')">
-                                        <i class="bi bi-cup-hot"></i>
-                                        <span>Alimentos</span>
-                                    </div>
-                                    <div class="type-option" data-type="otros" onclick="selectType(this, 'otros')">
-                                        <i class="bi bi-boxes"></i>
-                                        <span>Otros</span>
-                                    </div>
-                                </div>
-                                <input type="hidden" id="tipo" name="tipo" value="{{ old('tipo', 'equipamiento') }}">
-                                @error('tipo')
-                                    <div class="error-message">{{ $message }}</div>
-                                @enderror
-                            </div> -->
-                            
                             <div class="action-buttons">
-                                <a href="{{url('/admin/proveedores')}}" class="btn-outline">
+                                <a href="{{url('/admin/usuarios')}}" class="btn-outline">
                                     <i class="bi bi-x-lg me-2"></i> Cancelar
                                 </a>
                                 <button type="submit" class="btn btn-primary">
-                                    <i class="bi bi-check-lg me-2"></i> Registrar Proveedor
+                                    <i class="bi bi-check-lg me-2"></i> Registrar Usuario
                                 </button>
                             </div>
                         </form>
@@ -329,44 +359,6 @@
             margin-top: 30px;
         }
         
-        .provider-type-selector {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-            gap: 10px;
-            margin-top: 10px;
-        }
-        
-        .type-option {
-            border: 2px solid var(--border-color);
-            border-radius: 8px;
-            padding: 15px 10px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .type-option:hover {
-            border-color: var(--primary-color);
-            background-color: #f0f5ff;
-        }
-        
-        .type-option.selected {
-            border-color: var(--primary-color);
-            background-color: #e1f0ff;
-        }
-        
-        .type-option i {
-            font-size: 1.5rem;
-            margin-bottom: 8px;
-            display: block;
-            color: var(--primary-color);
-        }
-        
-        .type-option span {
-            font-size: 0.85rem;
-            font-weight: 500;
-        }
-        
         @media (max-width: 768px) {
             .card-body {
                 padding: 20px;
@@ -379,39 +371,10 @@
             .action-buttons .btn {
                 width: 100%;
             }
-            
-            .provider-type-selector {
-                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-            }
         }
     </style>
 @stop
 
 @section('js')
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Función para seleccionar el tipo de proveedor
-        function selectType(element, type) {
-            // Deseleccionar todos los elementos
-            document.querySelectorAll('.type-option').forEach(opt => {
-                opt.classList.remove('selected');
-            });
-            
-            // Seleccionar el elemento clickeado
-            element.classList.add('selected');
-            
-            // Actualizar el valor del campo oculto
-            document.getElementById('tipo').value = type;
-        }
-        
-        // Seleccionar el tipo por defecto al cargar la página
-        document.addEventListener('DOMContentLoaded', function() {
-            const defaultType = document.getElementById('tipo').value;
-            const selector = document.querySelector(`.type-option[data-type="${defaultType}"]`);
-            
-            if (selector) {
-                selector.classList.add('selected');
-            }
-        });
-    </script>
 @stop

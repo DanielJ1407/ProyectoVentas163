@@ -51,6 +51,16 @@ Route::delete('/admin/empleados/{idEmpleado}', [App\Http\Controllers\EmpleadoCon
 
 Route::get('/admin/ventas', [App\Http\Controllers\DetalleVentaController::class, 'index']) -> name('ventas.index');
 Route::get('/admin/ventas/create', [App\Http\Controllers\DetalleVentaController::class, 'create'])->name('ventas.create');
+Route::post('/admin/ventas/create', [App\Http\Controllers\DetalleVentaController::class, 'store'])->name('ventas.store');
+Route::get('/admin/ventas/{idProducto}/{idDetalle_venta}', [App\Http\Controllers\DetalleVentaController::class, 'show'])->name('ventas.show');
+Route::get('/admin/ventas/{idProducto}/{idDetalle_venta}/edit', [App\Http\Controllers\DetalleVentaController::class, 'edit'])->name('ventas.edit');
+Route::put('/admin/ventas/{idProducto}/{idDetalle_venta}', [App\Http\Controllers\DetalleVentaController::class, 'update'])->name('ventas.update');
+Route::delete('/admin/ventas/{idProducto}/{idDetalle_venta}', [App\Http\Controllers\DetalleVentaController::class, 'destroy'])->name('ventas.destroy');
 
-Route::get('/admin/vendedores', [App\Http\Controllers\ClienteController::class, 'index']) -> name('vendedores.index');
-Route::get('/admin/vendedores/create', [App\Http\Controllers\ClienteController::class, 'create'])->name('vendedores.create');
+Route::get('/admin/usuarios', [App\Http\Controllers\AdministradorController::class, 'index']) -> name('usuarios.index');
+Route::get('/admin/usuarios/create', [App\Http\Controllers\AdministradorController::class, 'create'])->name('usuarios.create');
+Route::post('/admin/usuarios/create', [App\Http\Controllers\AdministradorController::class, 'store'])->name('usuarios.store');
+Route::get('/admin/usuarios/{idEmpleado}', [App\Http\Controllers\AdministradorController::class, 'show'])->name('usuarios.show');
+Route::get('/admin/usuarios/{idEmpleado}/edit', [App\Http\Controllers\AdministradorController::class, 'edit'])->name('usuarios.edit');
+Route::put('/admin/usuarios/{idEmpleado}', [App\Http\Controllers\AdministradorController::class, 'update'])->name('usuarios.update');
+Route::delete('/admin/usuarios/{idEmpleado}', [App\Http\Controllers\AdministradorController::class, 'destroy'])->name('usuarios.destroy');

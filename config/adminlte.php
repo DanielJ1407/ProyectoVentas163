@@ -65,7 +65,10 @@ return [
 
     'logo' => '<b>Mordern</b> Style',
     'logo_img' => 'vendor/adminlte/dist/img/logoModernStyle.png',
-    'logo_img_class' => 'brand-image img-circle elevation-3',
+    //aumentar tamaño de imagen
+
+    // 'logo_img' => 'vendor/adminlte/dist/img/logo.jpg',
+    'logo_img_class' => 'brand-image img-circle elevation-3 logo-grande',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
     'logo_img_alt' => 'Admin Logo',
@@ -338,36 +341,30 @@ return [
         [
             'text' => 'Productos',
             'url' => 'admin/Productos',
-            'icon' => 'fas fa-fw fa-list',
+            'icon' => 'fa-solid fa-clipboard',
             // 'classes' => 'bg-blue text-white',
         ],
         [
             'text' => 'Ventas',
             'url' => 'admin/ventas',
-            'icon' => 'fas fa-fw fa-list',
+            'icon' => 'fa-solid fa-shirt',
             // 'classes' => 'bg-blue text-white',
         ],
         [
             'text' => 'Clientes',
             'url' => 'admin/clientes',
-            'icon' => 'fas fa-fw fa-list',
+            'icon' => 'nav-icon fas fa-person',
             // 'classes' => 'bg-blue text-white',
         ],
         [
             'text' => 'Empleados',
             'url' => 'admin/empleados',
-            'icon' => 'fas fa-fw fa-list',
-            // 'classes' => 'bg-blue text-white',
-        ],
-        [
-            'text' => 'Categorias',
-            'url' => 'admin/categorias',
-            'icon' => 'fas fa-fw fa-list',
+            'icon' => 'nav-icon fas fa-address-card',
             // 'classes' => 'bg-blue text-white',
         ],
         [
             'text' => 'Usuarios',
-            'url' => 'admin/settings',
+            'url' => 'admin/usuarios',
             'icon' => 'fas fa-fw fa-user',
         ],
         [

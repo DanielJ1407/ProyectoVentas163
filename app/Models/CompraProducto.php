@@ -15,4 +15,15 @@ class CompraProducto extends Model
         'idDetalle_venta',
         'cantidad',
     ];
+
+    public function productos()
+    {
+        return $this->belongsTo(Producto::class, 'idProducto', 'idProducto');
+    }
+    
+    public function detalleVenta()
+    {
+        return $this->belongsTo(DetalleVenta::class, 'idDetalle_venta', 'idDetalle_venta');
+    }
+
 }

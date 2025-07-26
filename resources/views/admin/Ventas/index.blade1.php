@@ -5,8 +5,8 @@
         <!-- Breadcrumb -->
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{url('/admin')}}">INICIO</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Productos</li>
+                <li class="breadcrumb-item"><a href="{{ url('/admin') }}">INICIO</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Compras de Productos</li>
             </ol>
         </nav>
         <div class="hr"></div>
@@ -15,149 +15,92 @@
 
 @section('content')
 <div class="row mb-4">
-            <div class="col-md-3">
-                <div class="stats-card">
-                    <i class="bi bi-box-seam"></i>
-                    <h3>{{ count($productos) }}</h3>
-                    <p>Productos Registrados</p>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="stats-card">
-                    <i class="bi bi-tags"></i>
-                    <h3>{{ $productos->unique('marca')->count() }}</h3>
-                    <p>Marcas Diferentes</p>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="stats-card">
-                    <i class="bi bi-grid"></i>
-                    <h3>{{ $productos->unique('tipo')->count() }}</h3>
-                    <p>Categorías</p>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="stats-card">
-                    <i class="bi bi-palette"></i>
-                    <h3>{{ $productos->unique('color')->count() }}</h3>
-                    <p>Colores Disponibles</p>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Tarjeta Principal -->
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title"><i class="bi bi-box-seam me-2"></i> Productos Registrados</h3>
-                <a class="btn btn-primary" href="{{url('/admin/Productos/create')}}">
-                    <i class="bi bi-plus-lg"></i> Crear Nuevo Producto
-                </a>
-            </div>
-            
-            <div class="table-container">
-                <!-- Buscador y Filtros -->
-                <div class="search-container">
-                    <div class="search-box">
-                        <i class="bi bi-search"></i>
-                        <input type="text" placeholder="Buscar productos...">
-                    </div>
-                    <button class="filter-btn">
-                        <i class="bi bi-funnel"></i> Filtros
-                    </button>
-                </div>
-                
-                <!-- Tabla de Productos -->
-                <div class="table-responsive">
-                    <table class="table" id="example1" >
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Nombre</th>
-                                <th>Precio</th>
-                                <th>Marca</th>
-                                <th>Tipo</th>
-                                <th>Color</th>
-                                <th style="text-align: center">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if(count($productos) > 0)
-                                @foreach($productos as $producto)
-                                    <tr>
-                                        <td>{{ $producto->idProducto }}</td>
-                                        <td>
-                                            <div>{{ $producto->nombre_producto }}</div>
-                                            <div class="badge-tag">
-                                                {{ $producto->modelo }}
-                                            </div>
-                                        </td>
-                                        <td>Bs{{ number_format($producto->precio_unitario, 2) }}</td>
-                                        <td>{{ $producto->marca }}</td>
-                                        <td>{{ $producto->tipo }}</td>
-                                        <td>
-                                            <div style="display: flex; align-items: center; gap: 8px">
-                                                <div style="width: 16px; height: 16px; border-radius: 50%; background-color: {{ strtolower($producto->color) }}"></div>
-                                                {{ $producto->color }}
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="action-buttons">
-                                                <a href="{{ url('/admin/Productos/'.$producto->idProducto) }}" class="btn btn-info">
-                                                    <i class="bi bi-eye"></i> Ver
-                                                </a>
-                                                <a href="{{ url('/admin/Productos/'.$producto->idProducto.'/edit') }}" class="btn btn-warning">
-                                                    <i class="bi bi-pencil"></i> Editar
-                                                </a>
-                                                <form action="{{ url('/admin/Productos/'.$producto->idProducto) }}" id="form-eliminar-{{$producto->idProducto}}" method="POST" class="d-inline">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger" onclick="preguntar{{$producto->idProducto}}(event)">
-                                                        <i class="bi bi-trash"></i> Eliminar
-                                                    </button>
-                                                </form>
-                                                <script>
-                                                    function preguntar{{$producto->idProducto}}(event) {
-                                                        event.preventDefault();
-                                                        Swal.fire({
-                                                            title: "¿Eliminar producto?",
-                                                            text: "Esta acción no se puede deshacer",
-                                                            icon: "warning",
-                                                            showCancelButton: true,
-                                                            confirmButtonColor: "#4361ee",
-                                                            cancelButtonColor: "#d33",
-                                                            confirmButtonText: "Sí, eliminar",
-                                                            cancelButtonText: "Cancelar"
-                                                        }).then((result) => {
-                                                            if (result.isConfirmed) {
-                                                                document.getElementById("form-eliminar-{{$producto->idProducto}}").submit();
-                                                            }
-                                                        });
-                                                    }
-                                                </script>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            @else
-                                <tr>
-                                    <td colspan="7">
-                                        <div class="empty-state">
-                                            <i class="bi bi-inbox"></i>
-                                            <h4>No se encontraron productos</h4>
-                                            <p>Comienza agregando nuevos productos a tu catálogo</p>
-                                            <a class="btn btn-primary mt-3" href="{{url('/admin/Productos/create')}}">
-                                                <i class="bi bi-plus-lg"></i> Crear Primer Producto
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endif
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+    <div class="col-md-3">
+        <div class="stats-card">
+            <i class="bi bi-cart-check"></i>
+            <h3>{{ count($compras) }}</h3>
+            <p>Registros de Compra</p>
         </div>
     </div>
+    <div class="col-md-3">
+        <div class="stats-card">
+            <i class="bi bi-box-seam"></i>
+            <h3>{{ $compras->unique('idProducto')->count() }}</h3>
+            <p>Productos Distintos</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stats-card">
+            <i class="bi bi-receipt"></i>
+            <h3>{{ $compras->unique('idDetalle_venta')->count() }}</h3>
+            <p>Ventas Relacionadas</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stats-card">
+            <i class="bi bi-hash"></i>
+            <h3>{{ $compras->sum('cantidad') }}</h3>
+            <p>Total Cantidad</p>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title"><i class="bi bi-cart-check me-2"></i> Compras de Productos</h3>
+        <a class="btn btn-primary" href="{{ url('/admin/compras_productos/create') }}">
+            <i class="bi bi-plus-lg"></i> Nuevo Registro
+        </a>
+    </div>
+    <div class="table-container">
+        <div class="search-container">
+            <div class="search-box">
+                <i class="bi bi-search"></i>
+                <input type="text" placeholder="Buscar registros...">
+            </div>
+            <button class="filter-btn">
+                <i class="bi bi-funnel"></i> Filtros
+            </button>
+        </div>
+        <div class="table-responsive">
+            <table class="table" id="example1">
+                <thead>
+                    <tr>
+                        <th>Producto ID</th>
+                        <th>Detalle Venta ID</th>
+                        <th>Cantidad</th>
+                        <th style="text-align: center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($compras as $compra)
+                        <tr>
+                            <td>{{ $compra->idProducto }}</td>
+                            <td>{{ $compra->idDetalle_venta }}</td>
+                            <td>{{ $compra->cantidad }}</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <a href="{{ url('/admin/compras_productos/'.$compra->idProducto.'/'.$compra->idDetalle_venta) }}" class="btn btn-info btn-action">
+                                        <i class="bi bi-eye"></i> Ver
+                                    </a>
+                                    <a href="{{ url('/admin/compras_productos/'.$compra->idProducto.'/'.$compra->idDetalle_venta.'/edit') }}" class="btn btn-warning btn-action">
+                                        <i class="bi bi-pencil"></i> Editar
+                                    </a>
+                                    <form action="{{ url('/admin/compras_productos/'.$compra->idProducto.'/'.$compra->idDetalle_venta) }}" method="POST" class="d-inline" id="form-delete-{{ $compra->idProducto }}-{{ $compra->idDetalle_venta }}">
+                                        @csrf @method('DELETE')
+                                        <button type="button" class="btn btn-danger btn-action" onclick="confirmDelete('{{ $compra->idProducto }}-{{ $compra->idDetalle_venta }}')">
+                                            <i class="bi bi-trash"></i> Eliminar
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 @stop
 
 @section('css')
@@ -499,19 +442,27 @@
 @stop
 
 @section('js')
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Función de búsqueda
-        document.querySelector('.search-box input').addEventListener('keyup', function() {
-            const searchTerm = this.value.toLowerCase();
-            const rows = document.querySelectorAll('tbody tr');
-            
-            rows.forEach(row => {
-                const text = row.textContent.toLowerCase();
-                row.style.display = text.includes(searchTerm) ? '' : 'none';
-            });
+<script>
+    function confirmDelete(key) {
+        Swal.fire({
+            title: '¿Eliminar registro de compra?',
+            text: 'Esta acción no se puede deshacer',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('form-delete-' + key).submit();
+            }
         });
+    }
+    document.querySelector('.search-box input').addEventListener('keyup', function() {
+        const term = this.value.toLowerCase();
+        document.querySelectorAll('#example1 tbody tr').forEach(row => {
+            row.style.display = row.textContent.toLowerCase().includes(term) ? '' : 'none';
+        });
+    });
     </script>
     <script>
         $(function () {
